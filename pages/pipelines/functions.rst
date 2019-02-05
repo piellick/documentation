@@ -391,6 +391,22 @@ Match the regular expression in ``pattern`` against ``value``. Returns a match o
 ``matches`` to indicate whether the regular expression matched and, if requested, the matching groups as ``groups``.
 The groups can optionally be named using the ``group_names`` array. If not named, the groups names are strings starting with ``"0"``.
 
+In case of using groups for pattern matching, you need to include what group you want to use. 
+
+Exemple::
+
+        rule "extract {content}"
+        when
+            true
+        then
+            let message=to_string($message.message);
+   
+            let ex = regex(pattern: "\\{(.*?)\\}", value: message);
+    
+            set_field("first", ex["0"]);
+            set_field"("second", ex["1"]);
+        end
+
 .. note:: Patterns have to be valid `Java String literals <https://docs.oracle.com/javase/tutorial/essential/regex/literals.html>`_, please ensure you escape any backslashes in your regular expressions!
 
 grok
